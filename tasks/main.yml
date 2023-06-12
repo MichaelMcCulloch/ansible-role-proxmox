@@ -184,7 +184,7 @@
   when:
     - "'pve-no-subscription' in pve_repository_line"
 
-- import_tasks: kernel_updates.yml
+- import_tasks: kernel_62.yml
 
 - import_tasks: ipmi_watchdog.yml
   when: "pve_watchdog == 'ipmi'"

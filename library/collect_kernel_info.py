@@ -50,10 +50,11 @@ def main():
                 if e.stderr.startswith(b"dpkg-query: no path found matching"):
                     continue
                 raise e
+            line = to_text(sp.stdout).split(":")[0]
             if kernel.split("/")[-1] == booted_kernel.split("/")[-1]:
-                booted_kernel_package = to_text(sp.stdout).split(":")[0]
-            elif kernel != latest_kernel:
-                old_kernel_packages.append(to_text(sp.stdout).split(":")[0])
+                booted_kernel_package = line
+            elif kernel != latest_kernel and not line.startswith("pve-kernel-5.15"):
+                old_kernel_packages.append(line)
 
     # returns True if we're not booted into the latest kernel
     new_kernel_exists = booted_kernel.split("/")[-1] != latest_kernel.split("/")[-1]
