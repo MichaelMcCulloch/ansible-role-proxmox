@@ -110,6 +110,12 @@
     id: "{{ pve_release_key_id }}"
     state: present
 
+- name: Trust Proxmox' Repository key
+  copy:
+    src: "proxmox-release-bookworm.gpg"
+    dest: "/etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg"
+    mode: "0644"
+
 - name: Remove os-prober package
   apt:
     name: os-prober
