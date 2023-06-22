@@ -105,7 +105,6 @@
     - "inventory_hostname == groups[pve_group][0]"
     - item.0.name in _ha_group_list.response | json_query("[*].group")
     - item.1 in item.0
-    - item.0[item.1] != _ha_group_list.response
-                        | json_query("[?group=='" + item.0.name + "']." + item.1) | first
+    - item.0[item.1] != _ha_group_list.response | json_query("[?group=='" + item.0.name + "']." + item.1) | first
   loop: "{{ pve_cluster_ha_groups
             | product(['comment', 'nodes', 'nofailback', 'restricted']) | list }}"

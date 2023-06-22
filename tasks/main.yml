@@ -152,6 +152,25 @@
 
 - import_tasks: identify_needed_packages.yml
 
+- name: Install the Proxmox VE Kernel
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    name: "pve-kernel-6.2"
+    state: "{{ 'latest' if pve_run_proxmox_upgrades else 'present' }}"
+  retries: 2
+  register: _proxmox_kernel_install
+  until: _proxmox_kernel_install is succeeded
+
+- name: "Reboot for Proxmox VE Kernel update"
+  reboot:
+    msg: "PVE kernel update detected by Ansible"
+    pre_reboot_delay: "{{ pve_reboot_on_kernel_update_delay }}"
+    post_reboot_delay: "{{ pve_reboot_on_kernel_update_delay }}"
+  throttle: "{{ pve_cluster_enabled | bool }}"
+  when:
+    - _proxmox_kernel_install.changed
+  
 - name: Install Proxmox VE and related packages
   apt:
     update_cache: yes
