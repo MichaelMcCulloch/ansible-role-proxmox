@@ -39,7 +39,6 @@
         {{ hostvars[host].ansible_fqdn }}
         {{ hostvars[host].ansible_hostname }}
 
-
       {% endfor %}"
   when: "pve_cluster_enabled | bool and pve_manage_hosts_enabled | bool"
 
